@@ -1,0 +1,22 @@
+start: count_drones nodes+ connections+
+
+count_drones: "nb_drones:" INT
+
+nodes: ("start_hub:" | "end_hub:" | "hub:") CNAME SIGNED_INT SIGNED_INT metadata?
+metadata: "[" data+ "]"
+
+data: color | zone | max_drones
+color: "color=" CNAME
+zone: "zone=" CNAME
+max_drones: "max_drones=" INT
+
+connections: "connection:" CNAME "-" CNAME c_metadata?
+c_metadata: "[" c_data "]"
+c_data: "max_link_capacity=" INT
+
+%import common.CNAME
+%import common.INT
+%import common.SIGNED_INT
+%import common.WS
+%ignore WS
+%ignore /#[^\r\n]*/

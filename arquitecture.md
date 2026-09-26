@@ -74,6 +74,8 @@ RENDER:
     - Dibujar los nodos y las conexiones utilizando sus coordenadas.
     - Representar visualmente los drones.
     - Animar los movimientos entre los estados de cada turno.
+    - Los drones se representarán como naves de Rick y Morty.
+    - Los nodos se representarán como portales verdes característicos.
     - No decidirá las rutas ni modificará el estado de la simulación.
 
 MAIN:
@@ -83,3 +85,22 @@ MAIN:
     - Crear los objetos Drone.
     - Crear e iniciar Simulation con el grafo y los drones.
     - Iniciar y coordinar la visualización mediante Render.
+
+STRUCTURE:
+    fly_in/
+├── main.py
+├── parser/
+│   ├── grammar.lark
+│   ├── parser.py
+│   └── models.py
+├── graph/
+│   ├── graph.py
+│   ├── node.py
+│   └── connection.py
+├── simulation/
+│   ├── drone.py
+│   └── simulation.py
+├── render/
+│   └── renderer.py
+├── assets/
+└── tests/
