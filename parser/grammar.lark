@@ -2,7 +2,9 @@ start: count_drones nodes+ connections+
 
 count_drones: "nb_drones:" INT
 
-nodes: ("start_hub:" | "end_hub:" | "hub:") CNAME SIGNED_INT SIGNED_INT metadata?
+nodes: "start_hub:" CNAME SIGNED_INT SIGNED_INT metadata? -> start_hub
+     | "end_hub:" CNAME SIGNED_INT SIGNED_INT metadata?   -> end_hub
+     | "hub:" CNAME SIGNED_INT SIGNED_INT metadata?       -> hub
 metadata: "[" data+ "]"
 
 data: color | zone | max_drones

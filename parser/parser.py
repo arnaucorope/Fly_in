@@ -34,8 +34,9 @@ class MapParser:
         for branch in branches:
             if branch.data == "count_drones":
                 map_data["nb_drones"] = int(branch.children[0])
-            elif branch.data == "nodes":
+            elif branch.data in ("start_hub", "end_hub", "hub"):
                 node_data = {
+                        "type": str(branch.data),
                         "name": str(branch.children[0]),
                         "x": int(branch.children[1]),
                         "y": int(branch.children[2]),
