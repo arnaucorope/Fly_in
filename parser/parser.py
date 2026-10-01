@@ -1,20 +1,21 @@
 from pathlib import Path
 from lark import Lark, Tree
 from lark.exceptions import UnexpectedInput
+from parser_errors import MapError
 import sys
 
 
 class MapParser:
     def __init__(self) -> None:
         grammar_path = Path(__file__).with_name("grammar.lark")
-        self._parser = Lark.open(grammar_path)
+        self._parser = Lark.open(grammar_path, propagate_positions=True)
 
     def read_file(self, file_route: str) -> str:
         try:
             with open(file_route, "r", encoding="utf-8") as file:
                 text = file.read()
-        except (OSError, UnicodeError):
-            raise
+        except (OSError, UnicodeError) as error:
+            raise MapError.from_file(error, file_route)
         return text
 
     def parse_file(self, file_route: str) -> Tree:
@@ -22,7 +23,7 @@ class MapParser:
         try:
             tree = self._parser.parse(map_text)
         except UnexpectedInput as error:
-            raise
+            raise MapError.from_lark(error, map_text)
         return tree
 
     def convert_data(self, file_route: str) -> dict:
@@ -34,12 +35,14 @@ class MapParser:
         for branch in branches:
             if branch.data == "count_drones":
                 map_data["nb_drones"] = int(branch.children[0])
+                map_data["nb_drones_line"] = branch.meta.line
             elif branch.data in ("start_hub", "end_hub", "hub"):
                 node_data = {
                         "type": str(branch.data),
                         "name": str(branch.children[0]),
                         "x": int(branch.children[1]),
                         "y": int(branch.children[2]),
+                        "n_line": branch.meta.line,
                         }
                 if len(branch.children) > 3:
                     data = branch.children[3]
@@ -56,6 +59,7 @@ class MapParser:
                 connection_data = {
                         "source": str(branch.children[0]),
                         "target": str(branch.children[1]),
+                        "n_line": branch.meta.line,
                         }
                 if len(branch.children) > 2:
                     data = branch.children[2]
@@ -64,10 +68,3 @@ class MapParser:
                             metadata[0].children[0])
                 map_data["connections"].append(connection_data)
         return map_data
-
-
-if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        lark = MapParser()
-        tree_lark = lark.convert_data(sys.argv[1])
-        print(tree_lark)

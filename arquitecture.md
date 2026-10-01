@@ -8,6 +8,26 @@ PARSER:
         - Conexiones con sus metadatos.
     - No se encargará de mover drones ni de ejecutar la simulación.
 
+    Pydantic:
+        MapModel
+        ├── nb_drones: int
+        ├── nodes: list[HubModel]
+        └── connections: list[ConnectionModel]
+        
+        HubModel
+        ├── type
+        ├── name
+        ├── x
+        ├── y
+        ├── zone
+        ├── color
+        └── max_drones
+
+        ConnectionModel
+        ├── source
+        ├── target
+        └── max_link_capacity
+
 NODE:
     - Representar un nodo individual del grafo.
     - Guardar sus atributos:
