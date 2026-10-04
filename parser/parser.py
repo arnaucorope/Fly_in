@@ -1,7 +1,7 @@
 from pathlib import Path
 from lark import Lark, Tree
 from lark.exceptions import UnexpectedInput
-from parser_errors import MapError
+from parser.parser_errors import MapError
 import sys
 
 
@@ -48,6 +48,7 @@ class MapParser:
                     data = branch.children[3]
                     metadata = data.children
                     for item in metadata:
+                        item = item.children[0]
                         if item.data == "color":
                             node_data["color"] = str(item.children[0])
                         elif item.data == "zone":

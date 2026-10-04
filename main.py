@@ -2,9 +2,10 @@ import sys
 
 from pydantic import ValidationError
 
-from parser import MapParser
-from parser_errors import MapError
-from models import MapModel
+from parser.parser import MapParser
+from parser.parser_errors import MapError
+from parser.models import MapModel
+from graph.graph import Graph 
 
 
 def main() -> None:
@@ -33,8 +34,10 @@ def main() -> None:
             print(f"Error: {message}")
         return
 
-    print(validated_map)
+    graph_object = Graph(validated_map)
+    graph = graph_object.generate_graph()
+    print(graph)
 
-
+    
 if __name__ == "__main__":
     main()

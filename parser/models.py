@@ -29,6 +29,15 @@ class HubModel(BaseModel):
                     )
         return self
 
+    @model_validator(mode="after")
+    def validate_name(self) -> "HubModel":
+        if "-" in self.name:
+            raise ValueError(
+                f"Line {self.n_line}: hub name '{self.name}' "
+                "cannot contain '-'."
+            )
+        return self
+
 
 class ConnectionModel(BaseModel):
     source: str
