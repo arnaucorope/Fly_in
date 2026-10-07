@@ -1,5 +1,5 @@
 
-def find_route(graph: dict[Hub, list[Connection]]) -> list[Hub]:
+def find_route_bfs(graph: dict[Hub, list[Connection]]) -> list[Hub]:
     for hub in graph:
         if hub.type == "start_hub":
             start = hub
@@ -8,6 +8,7 @@ def find_route(graph: dict[Hub, list[Connection]]) -> list[Hub]:
     queue = [start]
     visited = [start]
     parents = {}
+
     while queue:
         current = queue.popleft()
         for connection in graph[current]:
@@ -22,12 +23,47 @@ def find_route(graph: dict[Hub, list[Connection]]) -> list[Hub]:
         if end in parents:
             break
     path: list[Hub] = []
-    path.append(end)
-    current = parents[end]
-    while True:
+    current = end
+    while current != start:
+        path.append(current)
         current = parents[current]
-        path.append(parents[current])
-        if start in path:
-            break
+    path.append(current)
+    path.reverse()
+    return path
+
+
+def find_route_dfs(graph: dict[Hub, list[Connections]]) -> list[Hub]:
+    for hub in graph:
+        if hub.type == "start_hub":
+            start = hub
+        elif hub.type == "end_hub":
+            end = hub
+
+    visited = set()
+    stack = []
+
+    visited.add(start)
+    stack.append(start)
+    current = start
+    while visited:
+        for connection in graph[current]:
+            if current == connection.source:
+                neighbour = connection.target
+            else:
+                neighbour = connection.source
+            if neighbour not in visited and neighbour == end:
+                current = neighbour
+                stack.append(current)
+                visited.add(current)
+                return stack
+            elif neighbour not in visited:
+                current = neighbour
+                stack.append(current)
+                visited.add(current)
+            else:
+                stack.pop(current)
+
+    return stack
+
 
 
