@@ -1,3 +1,5 @@
+from graph import Hub
+
 class Drone:
     def __init__(self, drone_id: int, path: list[Hub]) -> None:
         self.id = drone_id
@@ -14,11 +16,11 @@ class Drone:
         return self.path[self._path_index + 1]
 
     def get_movement_info(self) -> dict:
-    return {
-        "drone": self,
-        "current": self.current_hub(),
-        "next": self.next_hub(),
-        }
+        return {
+            "drone": self,
+            "current": self.current_hub(),
+            "next": self.next_hub(),
+            }
 
     def advance(self) -> None:
         if self.delivered:

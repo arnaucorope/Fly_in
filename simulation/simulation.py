@@ -68,3 +68,5 @@ class Simulation:
 
             self.move_drones(proposals)
             self._turn += 1
+            for drone in self.drones:
+                print(f"id{drone.id} name_hub{drone.current_hub().name}")

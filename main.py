@@ -1,10 +1,8 @@
 import sys
-
+from simulation import Simulation
 from pydantic import ValidationError
-
-from parser.parser import MapParser
-from parser.parser_errors import MapError
-from parser.models import MapModel
+from pathfinder.pathfinder import Pathfinder
+from parser import MapParser, MapError, MapModel
 from graph.graph import Graph 
 
 
@@ -36,7 +34,15 @@ def main() -> None:
 
     graph_object = Graph(validated_map)
     graph = graph_object.generate_graph()
-    print(graph)
+    pathfinder = Pathfinder(graph)
+    path = pathfinder.find_route_bfs()
+    simulation = Simulation(graph, validated_map.nb_drones)
+    simulation.create_drones(path)
+    print(len(simulation.drones))
+    for drone in simulation.drones:
+        print(drone.id)
+        print(drone.current_hub().name)
+    simulation.run_simulation()
 
     
 if __name__ == "__main__":
