@@ -1,4 +1,3 @@
-
 def find_route_bfs(graph: dict[Hub, list[Connection]]) -> list[Hub]:
     for hub in graph:
         if hub.type == "start_hub":
@@ -64,6 +63,3 @@ def find_route_dfs(graph: dict[Hub, list[Connections]]) -> list[Hub]:
                 stack.pop(current)
 
     return stack
-
-
-
